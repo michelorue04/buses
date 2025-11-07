@@ -1,0 +1,240 @@
+
+package Busqueda;
+
+
+import Login.Principalfrm;
+import config.CConexion;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+
+public class BuscarConductor extends javax.swing.JFrame {
+
+    // Declaración de variables
+    CConexion conexion = new CConexion();
+    Connection cn;
+    PreparedStatement ps;
+    ResultSet rs;
+
+    // Constructor
+    public BuscarConductor() {
+        initComponents();  // Inicializa los componentes gráficos
+        setLocationRelativeTo(null);  // Centra la ventana
+    }
+
+    // Método para realizar la búsqueda
+    void buscar() {
+        String id = txtResultados.getText().trim();  // Obtenemos el ID ingresado por el usuario
+        String sql = "SELECT * FROM Conductores WHERE id_conductor = ?";  // Consulta SQL para buscar el conductor por ID
+
+        // Verificar si el ID está vacío
+        if (id.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Debe ingresar un ID para buscar.");
+            return;  // Si el ID está vacío, salimos del método
+        }
+
+        try {
+            // Establecer la conexión a la base de datos
+            cn = conexion.getConexion();
+            ps = cn.prepareStatement(sql);  // Preparamos la consulta con parámetros
+            ps.setString(1, id);  // Asignamos el valor del ID en el primer parámetro
+
+            // Ejecutamos la consulta
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                // Si encontramos un resultado, mostramos los datos en el campo txtmuestra
+                String nombre = rs.getString("nombre");
+                String documento = rs.getString("documento_identidad");
+                String telefono = rs.getString("telefono");
+                String email = rs.getString("email");
+                String edad = rs.getString("edad");
+                String sexo = rs.getString("sexo");
+
+                // Mostrar los resultados en el campo txtmuestra
+                txtmuestra.setText("Nombre: " + nombre + "\n" +
+                                   "Documento: " + documento + "\n" +
+                                   "Teléfono: " + telefono + "\n" +
+                                   "Email: " + email + "\n" +
+                                   "Edad: " + edad + "\n" +
+                                   "Sexo: " + sexo);
+            } else {
+                // Si no encontramos resultados, mostramos un mensaje
+                JOptionPane.showMessageDialog(null, "No se encontraron resultados.");
+                txtmuestra.setText("");  // Limpiamos el campo txtmuestra
+            }
+
+        } catch (SQLException e) {
+            // Si ocurre un error en la consulta, mostramos un mensaje
+            JOptionPane.showMessageDialog(null, "Error al realizar la búsqueda: " + e.getMessage());
+        }
+    }
+
+    
+    
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jPanel1 = new javax.swing.JPanel();
+        btnBuscar = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtmuestra = new javax.swing.JTextArea();
+        txtResultados = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        BTNSALIR9 = new javax.swing.JButton();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jPanel1.setBackground(new java.awt.Color(0, 153, 102));
+
+        btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
+
+        txtmuestra.setColumns(20);
+        txtmuestra.setRows(5);
+        jScrollPane1.setViewportView(txtmuestra);
+
+        jLabel2.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel2.setFont(new java.awt.Font("Segoe UI Black", 3, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("Buscar por ID en la Tabla Conductores");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(110, 110, 110)
+                        .addComponent(jLabel1))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(59, 59, 59)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(txtResultados, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(35, 35, 35)
+                                .addComponent(btnBuscar))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(50, 50, 50)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 339, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(40, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2)
+                .addGap(12, 12, 12)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtResultados, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnBuscar))
+                .addGap(30, 30, 30)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(58, Short.MAX_VALUE))
+        );
+
+        BTNSALIR9.setBackground(new java.awt.Color(255, 0, 0));
+        BTNSALIR9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        BTNSALIR9.setForeground(new java.awt.Color(255, 255, 255));
+        BTNSALIR9.setIcon(new javax.swing.ImageIcon("F:\\CUARTO CICLO\\JAVA PROYECTO\\Imagenes\\salir_1.png")); // NOI18N
+        BTNSALIR9.setText("Salir");
+        BTNSALIR9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTNSALIR9ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(29, 29, 29)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+                .addComponent(BTNSALIR9))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(BTNSALIR9)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        // TODO add your handling code here:
+        buscar();
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void BTNSALIR9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTNSALIR9ActionPerformed
+        // TODO add your handling code here:
+        Principalfrm abrir= new Principalfrm ();
+        abrir.setVisible(true);
+    }//GEN-LAST:event_BTNSALIR9ActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(BuscarConductor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(BuscarConductor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(BuscarConductor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(BuscarConductor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new BuscarConductor().setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BTNSALIR9;
+    private javax.swing.JButton btnBuscar;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField txtResultados;
+    private javax.swing.JTextArea txtmuestra;
+    // End of variables declaration//GEN-END:variables
+}
